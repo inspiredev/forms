@@ -31,6 +31,7 @@ app.all('/forms/:form_id', function(req, res, next) {
 app.get('/forms/:form_id', function(req, res) {
 	var id = req.params.form_id,
 		json;
+
 	MongoClient.connect(mongoURI, function(err, db) {
 		if (err) {
 			return (console.dir(err));
@@ -44,18 +45,16 @@ app.get('/forms/:form_id', function(req, res) {
 			db.close();
 		});
 	});
-
-
 });
 
 app.post('/forms/:form_id', function(req, res) {
 	var form_id = req.params.form_id,
 		entry = {};
-	console.log(req.body);
+
+	// map form name and values to variable entry
 	_.each(req.body, function(value, key) {
 		entry[key] = value;
 	});
-	console.log(entry);
 
 	MongoClient.connect(mongoURI, function(err, db) {
 		if(err) {
@@ -101,7 +100,7 @@ app.post('/forms/:form_id', function(req, res) {
 							console.dir(err);
 						} else {
 							console.log('Successfully created new entry for form ' + form_id);
-							res.writeHead(200);
+							res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
 							res.end();
 							db.close();
 						}
