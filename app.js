@@ -49,6 +49,13 @@ app.get('/forms/:form_id', function(req, res) {
 	});
 });
 
+// Default response
+app.get('/', function(req, res) {
+	res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+	res.write('<h1>Inspired Forms</h1><div>Welcome to Inspired Forms.</div>');
+	res.end();
+});
+
 app.post('/forms/:form_id', function(req, res) {
 	var form_id = req.params.form_id,
 		entry = {};
