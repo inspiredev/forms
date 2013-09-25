@@ -59,10 +59,7 @@ app.post('/forms/:form_id', function(req, res) {
 	var form_id = req.params.form_id,
 		entry = {};
 
-	// map form name and values to variable entry
-	_.each(req.body, function(value, key) {
-		entry[key] = value;
-	});
+	entry = req.body;
 
 	MongoClient.connect(mongoURI, function(err, db) {
 		if(err) {
@@ -108,9 +105,10 @@ app.post('/forms/:form_id', function(req, res) {
 							console.dir(err);
 						} else {
 							console.log('Successfully created new entry for form ' + form_id);
+							var content = mailer.parse(results[0]);
 							res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
 							res.end();
-							mailer.sendmail();
+							mailer.sendmail(content);
 							db.close();
 						}
 					});
