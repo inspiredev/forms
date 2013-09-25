@@ -106,7 +106,11 @@ app.post('/forms/:form_id', function(req, res) {
 						} else {
 							console.log('Successfully created new entry for form ' + form_id);
 							var content = mailer.parse(results[0]);
-							res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
+							res.writeHead(200, {
+								'Content-Type': 'application/json; charset=utf-8',
+								'Access-Control-Allow-Origin': '*'
+							});
+							res.write(JSON.stringify(results[0]));
 							res.end();
 							mailer.sendmail(content);
 							db.close();
