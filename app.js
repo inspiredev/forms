@@ -4,7 +4,8 @@ var express = require('express'),
 	server = http.createServer(app),
 	mongo = require('mongodb'),
 	MongoClient = mongo.MongoClient,
-	_ = require('underscore');
+	_ = require('underscore'),
+	mailer = require('./mailer');
 
 // express configuration
 app.use(express.logger('dev'));
@@ -109,6 +110,7 @@ app.post('/forms/:form_id', function(req, res) {
 							console.log('Successfully created new entry for form ' + form_id);
 							res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
 							res.end();
+							mailer.sendmail();
 							db.close();
 						}
 					});
