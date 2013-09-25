@@ -10,9 +10,6 @@ var express = require('express'),
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 
-console.log(process.env);
-console.log(process.env.MONGOLAB_URI);
-
 var mongoURI = (process.env.MONGOLAB_URI) ? process.env.MONGOLAB_URI : "mongodb://localhost:27017/forms";
 
 // Create a counter collection
@@ -119,7 +116,6 @@ app.post('/forms/:form_id', function(req, res) {
 			);
 		});
 	});
-
 
 });
 
