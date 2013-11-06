@@ -3,7 +3,6 @@
 module.exports = function(grunt) {
 
 	// load all grunt tasks
-	console.log(require('matchdep').filterDev('grunt-*'));
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
 	grunt.initConfig({

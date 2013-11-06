@@ -10,8 +10,6 @@ var mailer = (function() {
 		}
 	});
 
-	console.log(process.env.GMAIL_PASS);
-
 	var mailOptions = {
 		from: 'Tri Nguyen <tringuyenduy@gmail.com', // sender address
 		to: 'tringuyenduy@gmail.com', // list of receivers
