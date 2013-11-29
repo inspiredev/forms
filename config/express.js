@@ -15,9 +15,9 @@ module.exports = function(app, config) {
 		}));
 		app.set('views', config.root + '/app/views');
 		app.set('view engine', '.hbs');
+		app.use(express.static(config.root + '/public'));
 		app.use(function(req, res) {
 			res.status(404).render('404', { title: '404' });
 		});
-		app.use(express.static(config.root + '/public'));
 	});
 }
