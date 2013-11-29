@@ -2,9 +2,7 @@ var forms = require('../app/controllers/forms');
 
 module.exports = function (app) {
 	app.get('/', function(req, res) {
-		res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-		res.write('<h1>Inspired Forms</h1><div>Welcome to Inspired Forms.</div>');
-		res.end();
+		res.render('home');
 	});
 
 	app.get('/forms', forms.showAll);
