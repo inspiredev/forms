@@ -6,7 +6,7 @@ var entrySchema = new Schema({
 });
 
 var formSchema = new Schema({
-	title: String,
+	name: String,
 	notifyName: String,
 	notifyEmail: String,
 	notifySubject: String,
@@ -14,3 +14,4 @@ var formSchema = new Schema({
 });
 
 mongoose.model('Form', formSchema);
+mongoose.model('Entry', entrySchema);

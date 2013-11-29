@@ -1,7 +1,16 @@
 <h1>Forms</h1>
+{{#if newForm}}
+	Your form has been successfully created.
+	{{newForm}}
+{{else}}
 <h2>Create new</h2>
-<form id="new-form">
-	<label for="form-name">
-		<input type="text" name="form-name"/>
+<form id="new-form" action="/forms" method="post">
+	<label for="name">Name:
+		<input type="text" name="name"/>
 	<label>
+	<label for="notify-email">Send email notifications to:
+		<input type="text" name="notify-email">
+	</label>
+	<input id="new-form-submit" type="submit" value="Create!"/>
 </form>
+{{/if}}
