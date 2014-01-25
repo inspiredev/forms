@@ -42,6 +42,7 @@ module.exports = function(grunt) {
 				files: {
 					'public/css/main.css': [
 						'public/components/normalize-css/normalize.css',
+						'public/components/bootstrap/dist/css/bootstrap.css',
 						'public/css/main.css'
 					]
 				}
