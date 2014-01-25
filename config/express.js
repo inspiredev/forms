@@ -16,8 +16,13 @@ module.exports = function(app, config) {
 		app.set('views', config.root + '/app/views');
 		app.set('view engine', '.hbs');
 		app.use(express.static(config.root + '/public'));
-		app.use(function(req, res) {
+		app.use(function (req, res) {
 			res.status(404).render('404', { title: '404' });
+		});
+		app.all('*', function (req, res, next) {
+			res.header("Access-Control-Allow-Origin", "*");
+			res.header("Access-Control-Allow-Headers", "X-Requested-With");
+			next();
 		});
 	});
 }

@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 var entrySchema = new Schema({
+	form_id: String,
 	content: {}
 });
 

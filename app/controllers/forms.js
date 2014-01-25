@@ -1,5 +1,7 @@
-var mongoose = require('mongoose'),
-	Form = mongoose.model('Form');
+var _ = require('lodash'),
+	mongoose = require('mongoose'),
+	Form = mongoose.model('Form'),
+	Entry = mongoose.model('Entry');
 
 // Check for valid ID
 function isValidObjectID(str) {
@@ -11,7 +13,7 @@ function isValidObjectID(str) {
 	}
 }
 
-exports.showAll = function(req, res) {
+exports.showAll = function (req, res) {
 	Form.find(function (err, forms) {
 		if (err) throw new Error(err);
 		// res.write(JSON.stringify(forms));
@@ -20,12 +22,12 @@ exports.showAll = function(req, res) {
 	});
 }
 
-exports.show = function(req, res) {
+exports.show = function (req, res) {
 	var form_id = req.params.form_id;
 	if (!isValidObjectID(form_id)) {
 		res.send(400, 'Form ID entered is invalid');
 	}
-	Form.findById(form_id, function(err, form) {
+	Form.findById(form_id, function (err, form) {
 		if (err) {
 			console.error(err);
 			res.send(400, err);
@@ -35,8 +37,7 @@ exports.show = function(req, res) {
 	});
 }
 
-exports.create = function(req, res) {
-	console.log(req.body);
+exports.create = function (req, res) {
 	var name = req.body.name,
 		notifyEmail = req.body['notify-email'],
 		notifyName = req.body['notify-name'] || 'User',
@@ -48,13 +49,32 @@ exports.create = function(req, res) {
 		notifyEmail: notifyEmail,
 		notifySubject: notifySubject
 	});
-	form.save(function(err, form) {
+	form.save(function (err, form) {
 		if (err) {
 			console.log(err);
 		}
-		console.log(form);
 		res.render('forms', {
 			newForm: form
 		})
+	});
+}
+
+exports.newEntry = function (req, res) {
+	console.log(req.body);
+	var content = req.body,
+		form_id = req.body.form_id,
+		entry = new Entry({
+			form_id: form_id,
+			content: _.omit(content, 'form_id')
+		});
+	Form.findByIdAndUpdate(form_id, {
+		$addToSet: {
+			entries: entry
+		}
+	}, {
+		upsert: true
+	},function(err, form) {
+		console.log(form);
+		res.send(200, form);
 	});
 }
