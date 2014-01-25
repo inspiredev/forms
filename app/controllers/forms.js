@@ -40,7 +40,7 @@ exports.create = function(req, res) {
 	var name = req.body.name,
 		notifyEmail = req.body['notify-email'],
 		notifyName = req.body['notify-name'] || 'User',
-		notifySubject = req.body['notifySubject'] || 'New form submission';
+		notifySubject = req.body['notify-subject'] || 'New form submission';
 
 	var form = new Form({
 		name: name,

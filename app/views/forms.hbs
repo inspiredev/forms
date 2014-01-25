@@ -5,11 +5,19 @@
 {{else}}
 <h2>Create new</h2>
 <form id="new-form" action="/forms" method="post">
-	<label for="name">Name:
-		<input type="text" name="name"/>
-	<label>
+	<div class="">
+		<label class="form-control" for="name">Form Name:
+			<input class="form-control" type="text" name="name"/>
+		<label>
+	</div>
 	<label for="notify-email">Send email notifications to:
-		<input type="text" name="notify-email">
+		<input type="email" name="notify-email"/>
+	</label>
+	<label for="notify-name">Name of person receiving the notification:
+		<input type="text" name="notify-name" placeholder="User"/>
+	</label>
+	<label for="notify-subject">Subject of notification email:
+		<input type="text" name="notify-subject" placeholder="New Form Submission"/>
 	</label>
 	<input id="new-form-submit" type="submit" value="Create!"/>
 </form>

@@ -3,7 +3,9 @@
 module.exports = function(grunt) {
 
 	// load all grunt tasks
-	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+	require('load-grunt-tasks')(grunt);
+	// display execution time of grunt tasks
+	require('time-grunt')(grunt);
 
 	grunt.initConfig({
 		config: require('./config/config'),
@@ -38,7 +40,10 @@ module.exports = function(grunt) {
 			},
 			prod: {
 				files: {
-					'public/css/main.css': ['public/components/normalize-css/normalize.css', 'public/css/main.css']
+					'public/css/main.css': [
+						'public/components/normalize-css/normalize.css',
+						'public/css/main.css'
+					]
 				}
 			}
 		},
@@ -48,7 +53,6 @@ module.exports = function(grunt) {
 				tasks: ['css']
 			}
 		}
-
 	});
 
 	grunt.registerTask('css', [
@@ -61,7 +65,6 @@ module.exports = function(grunt) {
 		'css',
 		'concurrent:dev'
 	]);
-
 
 	grunt.registerTask('default', ['dev']);
 }
