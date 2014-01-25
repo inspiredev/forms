@@ -52,6 +52,7 @@ exports.create = function(req, res) {
 		if (err) {
 			console.log(err);
 		}
+		console.log(form);
 		res.render('forms', {
 			newForm: form
 		})

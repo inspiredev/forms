@@ -4,21 +4,23 @@
 	{{newForm}}
 {{else}}
 <h2>Create new</h2>
-<form id="new-form" action="/forms" method="post">
-	<div class="">
-		<label class="form-control" for="name">Form Name:
-			<input class="form-control" type="text" name="name"/>
-		<label>
+<form id="new-form" class="form" action="/forms" method="post">
+	<div class="form-group">
+		<label for="name">Form Name</label>
+		<input class="form-control" type="text" name="name"/>
 	</div>
-	<label for="notify-email">Send email notifications to:
-		<input type="email" name="notify-email"/>
-	</label>
-	<label for="notify-name">Name of person receiving the notification:
-		<input type="text" name="notify-name" placeholder="User"/>
-	</label>
-	<label for="notify-subject">Subject of notification email:
-		<input type="text" name="notify-subject" placeholder="New Form Submission"/>
-	</label>
-	<input id="new-form-submit" type="submit" value="Create!"/>
+	<div class="form-group">
+		<label for="notify-email">Send email notifications to</label>
+		<input class="form-control" type="email" name="notify-email"/>
+	</div>
+	<div class="form-group">
+		<label for="notify-name">Name of person receiving the notification</label>
+		<input class="form-control" type="text" name="notify-name" placeholder="User"/>
+	</div>
+	<div class="form-group">
+		<label for="notify-subject">Subject of notification email</label>
+		<input class="form-control" type="text" name="notify-subject" placeholder="New Form Submission"/>
+	</div>
+	<input id="new-form-submit" class="btn btn-primary" type="submit" value="Create!"/>
 </form>
 {{/if}}
