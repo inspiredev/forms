@@ -22,8 +22,8 @@ var mailer = (function() {
 	var parseContent = function(results) {
 		var content = '';
 		_.each(results, function(value, key){
-			content += key + ': ';
-			content += value + '\n';
+			content +=  key + ': ';
+			content += value + '\n\r';
 		});
 		return content;
 	}

@@ -61,8 +61,6 @@ exports.newEntry = function (req, res) {
 			form_id: form_id,
 			content: content
 		});
-	console.log(req.body);
-	console.log('creating new entry for form ' + form_id);
 	Form.findByIdAndUpdate(form_id, {
 		$addToSet: {
 			entries: entry
@@ -77,7 +75,7 @@ exports.newEntry = function (req, res) {
 			mailer.send(mailer.parse(content), {
 				from: form.fromName + ' <' + form.fromEmail + '>',
 				to: form.notifyEmail,
-				subject: form.notifySubject,
+				subject: form.notifySubject + '#' + form.numEntries,
 				replyTo: content.name + ' <' + content.email + '>'
 			});
 		} else {
