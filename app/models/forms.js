@@ -8,9 +8,10 @@ var entrySchema = new Schema({
 
 var formSchema = new Schema({
 	name: String,
-	notifyName: String,
 	notifyEmail: String,
 	notifySubject: String,
+	fromName: String,
+	fromEmail: String,
 	entries: [entrySchema]
 });
 

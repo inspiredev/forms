@@ -10,16 +10,20 @@
 		<input class="form-control" type="text" name="name"/>
 	</div>
 	<div class="form-group">
-		<label for="notify-email">Send email notifications to</label>
-		<input class="form-control" type="email" name="notify-email"/>
+		<label for="from-name">Notification Email 'From' Name</label>
+		<input class="form-control" type="text" name="from-name" placeholder=""/>
 	</div>
 	<div class="form-group">
-		<label for="notify-name">Name of person receiving the notification</label>
-		<input class="form-control" type="text" name="notify-name" placeholder="User"/>
+		<label for="from-address">Notification Email 'From' Address</label>
+		<input class="form-control" type="text" name="from-address" placeholder="noreply@inspiredev.co"/>
 	</div>
 	<div class="form-group">
-		<label for="notify-subject">Subject of notification email</label>
+		<label for="notify-subject">Notification Email Subject</label>
 		<input class="form-control" type="text" name="notify-subject" placeholder="New Form Submission"/>
+	</div>
+	<div class="form-group">
+		<label for="notify-email">Notification Email Address</label>
+		<input class="form-control" type="email" name="notify-email"/>
 	</div>
 	<input id="new-form-submit" class="btn btn-primary" type="submit" value="Create!"/>
 </form>

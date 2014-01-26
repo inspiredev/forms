@@ -1,6 +1,6 @@
 var mailer = (function() {
 	var nodemailer = require('nodemailer'),
-		_ = require('underscore');
+		_ = require('lodash');
 
 	var smtpTransport = nodemailer.createTransport('SMTP',{
 		service: 'Gmail',
@@ -11,8 +11,7 @@ var mailer = (function() {
 	});
 
 	var mailOptions = {
-		from: 'Tri Nguyen <tringuyenduy@gmail.com', // sender address
-		to: 'tringuyenduy@gmail.com', // list of receivers
+		from: 'Inspired Form <noreply@inspiredev.co>', // sender address
 		subject: 'Inspired Forms', // Subject line
 		text: 'Hello world ✔', // plaintext body
 		html: '<b>Hello world ✔</b>' // html body
@@ -40,13 +39,17 @@ var mailer = (function() {
 		return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 	}
 
-	var sendMail = function(content){
+	var sendMail = function(content, options){
+		// if there are options, parse them
+		if (!_.isEmpty(options)) {
+			_.extend(mailOptions, options);
+		}
 		mailOptions.text = content;
 		mailOptions.html = nl2br(content);
-		smtpTransport.sendMail(mailOptions, function(error, response){
-			if(error){
-				console.log(error);
-			}else{
+		smtpTransport.sendMail(mailOptions, function (err, response) {
+			if (err){
+				console.log(err);
+			} else{
 				console.log('Message sent: ' + response.message);
 			}
 
@@ -56,6 +59,6 @@ var mailer = (function() {
 	};
 
 	// export stuff
-	exports.sendmail = sendMail;
+	exports.send = sendMail;
 	exports.parse = parseContent;
 }());

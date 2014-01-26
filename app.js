@@ -4,7 +4,6 @@ var express = require('express'),
 	mongo = require('mongodb'),
 	MongoClient = mongo.MongoClient,
 	_ = require('underscore'),
-	mailer = require('./mailer'),
 	mongoose = require('mongoose'),
 	config = require('./config/config');
 
