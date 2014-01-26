@@ -3,16 +3,17 @@ var mailer = (function() {
 		_ = require('lodash');
 
 	var smtpTransport = nodemailer.createTransport('SMTP',{
-		service: 'Gmail',
+		service: 'Mailgun',
 		auth: {
-			user: 'tringuyenduy@gmail.com',
-			pass: process.env.GMAIL_PASS
+			user: 'postmaster@inspiredev.co',
+			pass: process.env.INSPIRED_FORMS_MAIL_PASS
 		}
 	});
 
 	var mailOptions = {
-		from: 'Inspired Form <noreply@inspiredev.co>', // sender address
-		subject: 'Inspired Forms', // Subject line
+		from: 'Inspired Form <postmaster@inspiredev.co>',
+		replyTo: 'noreply@inspiredev.co',
+		subject: 'Inspired Forms Notification',
 		text: 'Hello world ✔', // plaintext body
 		html: '<b>Hello world ✔</b>' // html body
 	};
