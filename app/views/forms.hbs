@@ -1,10 +1,7 @@
 <h1>Forms</h1>
-{{#if newForm}}
-	Your form has been successfully created.
-	{{newForm}}
-{{else}}
-<h2>Create new</h2>
+<div class="alert"></div>
 <form id="new-form" class="form" action="/forms" method="post">
+	<h2>Create new</h2>
 	<div class="form-group">
 		<label for="name">Form Name</label>
 		<input class="form-control" type="text" name="name"/>
@@ -27,4 +24,3 @@
 	</div>
 	<input id="new-form-submit" class="btn btn-primary" type="submit" value="Create!"/>
 </form>
-{{/if}}

@@ -27,8 +27,11 @@ require(['jquery', 'jquery-validate'], function($) {
 				type: 'POST',
 				data: $form.serialize(),
 				success: function(data, status) {
-					console.log(data);
-					console.log(status);
+					var successMessage = '';
+					successMessage += '<p>Your form has been created.</p>';
+					successMessage += '<p>You can start POSTing entries to it at http://inspired-forms.herokuapp.com/forms/' + data._id;
+					$('.alert').html(successMessage).addClass('alert-success');
+					$form.empty();
 				}
 			});
 		});

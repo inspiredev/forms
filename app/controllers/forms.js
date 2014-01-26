@@ -38,24 +38,18 @@ exports.show = function (req, res) {
 }
 
 exports.create = function (req, res) {
-	var name = req.body.name,
-		notifyEmail = req.body['notify-email'],
-		notifyName = req.body['notify-name'] || 'User',
-		notifySubject = req.body['notify-subject'] || 'New form submission';
-
 	var form = new Form({
-		name: name,
-		notifyName: notifyName,
-		notifyEmail: notifyEmail,
-		notifySubject: notifySubject
+		name: req.body.name,
+		notifyEmail: req.body['notify-email'],
+		notifySubject: req.body['notify-email'] || 'New form submission',
+		fromEmail: req.body['from-email'],
+		fromName: req.body['from-name']
 	});
 	form.save(function (err, form) {
 		if (err) {
 			console.log(err);
 		}
-		res.render('forms', {
-			newForm: form
-		})
+		res.json(form);
 	});
 }
 
