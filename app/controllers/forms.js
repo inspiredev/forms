@@ -43,7 +43,8 @@ exports.create = function (req, res) {
 		notifyEmail: req.body['notify-email'],
 		notifySubject: req.body['notify-email'] || 'New form submission',
 		fromEmail: req.body['from-email'],
-		fromName: req.body['from-name']
+		fromName: req.body['from-name'],
+		numEntries: 0
 	});
 	form.save(function (err, form) {
 		if (err) {
@@ -61,15 +62,16 @@ exports.newEntry = function (req, res) {
 			content: content
 		});
 	console.log('creating new entry for form ' + form_id);
-	console.log(Form.findById(form_id));
 	Form.findByIdAndUpdate(form_id, {
 		$addToSet: {
 			entries: entry
+		},
+		$inc: {
+			numEntries: 1
 		}
 	}, {},function(err, form) {
 		if (!err){
 			res.send(200);
-			console.log(form);
 			// send email notification
 			mailer.send(mailer.parse(content), {
 				from: form.fromName + ' <' + form.fromEmail + '>',

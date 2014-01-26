@@ -12,6 +12,7 @@ var formSchema = new Schema({
 	notifySubject: String,
 	fromName: String,
 	fromEmail: String,
+	numEntries: Number,
 	entries: [entrySchema]
 });
 
