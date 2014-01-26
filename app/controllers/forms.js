@@ -75,7 +75,7 @@ exports.newEntry = function (req, res) {
 			mailer.send(mailer.parse(content), {
 				from: form.fromName + ' <' + form.fromEmail + '>',
 				to: form.notifyEmail,
-				subject: form.notifySubject + '#' + form.numEntries,
+				subject: form.notifySubject + ' #' + form.numEntries,
 				replyTo: content.name + ' <' + content.email + '>'
 			});
 		} else {
