@@ -67,6 +67,7 @@ exports.newEntry = function (req, res) {
 	}, {},function(err, form) {
 		if (!err){
 			res.send(200);
+			console.log(form);
 			// send email notification
 			mailer.send(mailer.parse(content), {
 				from: form.fromName + ' <' + form.fromEmail + '>',
