@@ -61,6 +61,7 @@ exports.newEntry = function (req, res) {
 			form_id: form_id,
 			content: content
 		});
+	console.log(req.body);
 	console.log('creating new entry for form ' + form_id);
 	Form.findByIdAndUpdate(form_id, {
 		$addToSet: {
