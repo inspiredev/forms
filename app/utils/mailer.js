@@ -49,7 +49,7 @@ var mailer = (function() {
 		mailOptions.html = nl2br(content);
 		smtpTransport.sendMail(mailOptions, function (err, response) {
 			if (err){
-				console.log(err);
+				console.err(err);
 			} else{
 				console.log('Message sent: ' + response.message);
 			}

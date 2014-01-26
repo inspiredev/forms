@@ -64,9 +64,7 @@ exports.newEntry = function (req, res) {
 		$addToSet: {
 			entries: entry
 		}
-	}, {
-		upsert: true
-	},function(err, form) {
+	}, {},function(err, form) {
 		if (!err){
 			res.send(200);
 			// send email notification
