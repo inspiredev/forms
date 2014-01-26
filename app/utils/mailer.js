@@ -6,7 +6,7 @@ var mailer = (function() {
 		service: 'Mailgun',
 		auth: {
 			user: 'postmaster@inspiredev.co',
-			pass: process.env.INSPIRED_FORMS_MAIL_PASS
+			pass: process.env.INSPIRED_FORM_MAIL_PASS
 		}
 	});
 
