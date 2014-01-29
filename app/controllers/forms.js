@@ -64,9 +64,6 @@ exports.newEntry = function (req, res) {
 	Form.findByIdAndUpdate(form_id, {
 		$addToSet: {
 			entries: entry
-		},
-		$inc: {
-			numEntries: 1
 		}
 	}, {},function(err, form) {
 		if (!err){
@@ -75,7 +72,7 @@ exports.newEntry = function (req, res) {
 			mailer.send(mailer.parse(content), {
 				from: form.fromName + ' <' + form.fromEmail + '>',
 				to: form.notifyEmail,
-				subject: form.notifySubject + ' #' + form.numEntries,
+				subject: form.notifySubject + ' #' + form.entries.length,
 				replyTo: content.name + ' <' + content.email + '>'
 			});
 		} else {
