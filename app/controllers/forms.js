@@ -32,7 +32,7 @@ exports.show = function (req, res) {
 		if (err) {
 			res.send(400, err);
 		} else {
-			res.json(form);
+			res.render('form_single', form);
 		}
 	});
 }
