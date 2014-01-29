@@ -35,6 +35,27 @@ require(['jquery', 'jquery-validate'], function($) {
 				}
 			});
 		});
+		$('#edit-form-submit').on('click', function(e) {
+			e.preventDefault();
+			var $form = $("#edit-form"),
+				form_id = $form.data('id');
+			$form.validate({
+
+			});
+			if (!$form.valid()) {
+				return;
+			}
+			$.ajax({
+				url: '/forms/' + form_id,
+				type: 'PUT',
+				data: $form.serialize(),
+				success: function(data, status) {
+					var successMessage = '';
+					successMessage += '<p>Your form has been saved.</p>';
+					$('.alert').html(successMessage).addClass('alert-success');
+				}
+			});
+		});
 	});
 });
 

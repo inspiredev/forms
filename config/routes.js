@@ -9,4 +9,5 @@ module.exports = function (app) {
 	app.get('/forms/:form_id', forms.show);
 	app.post('/forms', forms.create);
 	app.post('/forms/:form_id', forms.newEntry);
+	app.put('/forms/:form_id', forms.update);
 }

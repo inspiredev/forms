@@ -43,15 +43,32 @@ exports.create = function (req, res) {
 		notifyEmail: req.body['notify-email'],
 		notifySubject: req.body['notify-email'] || 'New form submission',
 		fromEmail: req.body['from-email'],
-		fromName: req.body['from-name'],
-		numEntries: 0
+		fromName: req.body['from-name']
 	});
 	form.save(function (err, form) {
 		if (err) {
 			console.log(err);
+		} else {
+			res.json(200, form);
 		}
-		res.json(form);
 	});
+}
+
+exports.update = function (req, res) {
+	var form = {
+		name: req.body.name,
+		notifyEmail: req.body['notify-email'],
+		notifySubject: req.body['notify-subject'],
+		fromEmail: req.body['from-email'],
+		fromName: req.body['from-name']
+	};
+	Form.findByIdAndUpdate(req.params.form_id, form, function (err, form) {
+		if (err) {
+			console.error(err);
+		} else {
+			res.json(200, form);
+		}
+	})
 }
 
 exports.newEntry = function (req, res) {
