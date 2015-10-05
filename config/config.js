@@ -6,7 +6,7 @@ var config = {
 	development: {
 		root: rootPath,
 		port: 3000,
-		db: 'mongodb://localhost:27017/forms'
+		db: 'mongodb://mongodb:27017/forms'
 	},
 
 	production: {
