@@ -26,6 +26,7 @@ module.exports = function(app, config) {
 	app.use(morgan(config.logFormat));
 	app.use(bodyParser.json());
 	app.use(bodyParser.text());
+	app.use(bodyParser.urlencoded());
 	app.engine('.hbs', hbs.engine);
 	app.set('views', config.root + '/app/views');
 	app.set('view engine', '.hbs');
