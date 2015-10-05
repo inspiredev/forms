@@ -1,3 +1,5 @@
+'use strict';
+
 var mailer = (function() {
 	var nodemailer = require('nodemailer'),
 		_ = require('lodash');
@@ -5,8 +7,8 @@ var mailer = (function() {
 	var smtpTransport = nodemailer.createTransport('SMTP',{
 		service: 'Mailgun',
 		auth: {
-			user: 'postmaster@inspiredev.co',
-			pass: process.env.INSPIRED_FORM_MAIL_PASS
+			user: 'inspiredforms@tridnguyen.com',
+			pass: process.env.INSPIRED_FORMS_MAIL_PASS
 		}
 	});
 
@@ -26,7 +28,7 @@ var mailer = (function() {
 			content += value + '\n\n';
 		});
 		return content;
-	}
+	};
 
 	var nl2br = function (str, is_xhtml) {
 		// *     example 1: nl2br('Kevin\nvan\nZonneveld');
@@ -38,7 +40,7 @@ var mailer = (function() {
 		var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br ' + '/>' : '<br>'; // Adjust comment to avoid issue on phpjs.org display
 
 		return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
-	}
+	};
 
 	var sendMail = function(content, options){
 		// if there are options, parse them
