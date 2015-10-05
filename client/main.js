@@ -1,8 +1,7 @@
 'use strict';
 
-var jquery = require('jquery');
-
-jquery(document).ready(function($) {
+/* global jQuery */
+jQuery(document).ready(function($) {
 	console.log('ready!');
 	$('#new-form-submit').on('click', function(e) {
 		e.preventDefault();
