@@ -11,7 +11,13 @@ module.exports = function(grunt) {
 		config: require('./config/config'),
 		concurrent: {
 			dev: {
-				tasks: ['nodemon', 'watch'],
+				tasks: ['nodemon', 'watch', 'browserify:watch'],
+				options: {
+					logConcurrentOutput: true
+				}
+			},
+			build: {
+				tasks: ['css', 'browserify:dist'],
 				options: {
 					logConcurrentOutput: true
 				}
@@ -19,6 +25,21 @@ module.exports = function(grunt) {
 		},
 		nodemon: {
 			dev: {
+			}
+		},
+		browserify: {
+			dist: {
+				files: {
+					'public/js/main.js': 'client/main.js'
+				}
+			},
+			watch: {
+				files: {
+					'public/js/main.js': 'client/main.js'
+				},
+				options: {
+					watch: true
+				}
 			}
 		},
 		sass: {
@@ -41,8 +62,7 @@ module.exports = function(grunt) {
 			prod: {
 				files: {
 					'public/css/main.css': [
-						'public/components/normalize-css/normalize.css',
-						'public/components/bootstrap/dist/css/bootstrap.css',
+						'node_modules/bootstrap/dist/css/bootstrap.css',
 						'public/css/main.css'
 					]
 				}
@@ -68,4 +88,6 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('default', ['dev']);
-}
+
+	grunt.registerTask('build', ['concurrent:build']);
+};

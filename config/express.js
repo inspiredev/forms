@@ -6,6 +6,7 @@ var exphbs = require('express-handlebars');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
+var routes = require('./routes');
 
 module.exports = function(app, config) {
 	// hbs enging
@@ -27,6 +28,7 @@ module.exports = function(app, config) {
 	app.engine('.hbs', hbs.engine);
 	app.set('views', config.root + '/app/views');
 	app.set('view engine', '.hbs');
+	routes(app);
 	app.use(serveStatic(config.root + '/public'));
 	app.use(function (req, res) {
 		res.status(404).render('404', { title: '404' });

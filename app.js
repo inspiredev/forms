@@ -22,7 +22,7 @@ var app = express();
 
 // express configuration
 require('./config/express')(app, config);
-require('./config/routes')(app);
+// require('./config/routes')(app);
 
 app.listen(config.port);
 console.log( "Express server is listening on port %d in %s mode", app.settings.port, app.settings.env);
