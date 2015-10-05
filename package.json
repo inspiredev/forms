@@ -4,15 +4,19 @@
   "description": "personal node form processing",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.14.1",
     "bower": "~1.5.3",
+    "compression": "^1.6.0",
     "express": "~4.13.3",
     "express-handlebars": "^2.0.1",
     "load-grunt-tasks": "~3.3.0",
     "lodash": "~3.10.1",
     "mongodb": "~2.0.45",
     "mongoose": "~4.1.10",
+    "morgan": "^1.6.1",
     "nodemailer": "~1.6.0",
     "passport": "~0.3.0",
+    "serve-static": "^1.10.0",
     "time-grunt": "~1.2.1",
     "underscore": "~1.8.3"
   },
@@ -40,7 +44,7 @@
     "node"
   ],
   "author": "Tri Nguyen",
-  "license": "BSD",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/tnguyen14/forms/issues"
   }

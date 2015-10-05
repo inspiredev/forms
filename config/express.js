@@ -1,7 +1,11 @@
 'use strict';
 
-var express = require('express'),
-	exphbs = require('express3-handlebars');
+var express = require('express');
+var compression = require('compression');
+var exphbs = require('express-handlebars');
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var serveStatic = require('serve-static');
 
 module.exports = function(app, config) {
 	// hbs enging
@@ -16,15 +20,15 @@ module.exports = function(app, config) {
 		}
 	});
 
-	app.use(express.compress());
+	app.use(compression());
 	app.set('port', config.port);
-	app.use(express.logger('dev'));
-	app.use(express.bodyParser());
+	app.use(morgan(config.logFormat));
+	app.use(bodyParser.json());
 	app.use(app.router);
 	app.engine('.hbs', hbs.engine);
 	app.set('views', config.root + '/app/views');
 	app.set('view engine', '.hbs');
-	app.use(express.static(config.root + '/public'));
+	app.use(serveStatic(config.root + '/public'));
 	app.use(function (req, res) {
 		res.status(404).render('404', { title: '404' });
 	});
