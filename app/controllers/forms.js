@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	Form = mongoose.model('Form'),
@@ -7,7 +9,7 @@ var _ = require('lodash'),
 // Check for valid ID
 function isValidObjectID(str) {
 	var len = str.length;
-	if (len == 12 || len == 24) {
+	if (len === 12 || len === 24) {
 		return /^[0-9a-fA-F]+$/.test(str);
 	} else {
 		return false;
@@ -21,7 +23,7 @@ exports.showAll = function (req, res) {
 		// res.end();
 		res.render('forms', forms);
 	});
-}
+};
 
 exports.show = function (req, res) {
 	var form_id = req.params.form_id;
@@ -35,7 +37,7 @@ exports.show = function (req, res) {
 			res.render('form_single', form);
 		}
 	});
-}
+};
 
 exports.create = function (req, res) {
 	var form = new Form({
@@ -52,7 +54,7 @@ exports.create = function (req, res) {
 			res.json(200, form);
 		}
 	});
-}
+};
 
 exports.update = function (req, res) {
 	var form = {
@@ -68,8 +70,8 @@ exports.update = function (req, res) {
 		} else {
 			res.json(200, form);
 		}
-	})
-}
+	});
+};
 
 exports.newEntry = function (req, res) {
 	var content = _.omit(req.body, 'form_id'),
@@ -96,4 +98,4 @@ exports.newEntry = function (req, res) {
 			res.send(400, err);
 		}
 	});
-}
+};
