@@ -1,13 +1,11 @@
+'use strict';
+
 var forms = require('../app/controllers/forms');
 
 module.exports = function (app) {
-	app.get('/', function(req, res) {
-		res.render('home');
-	});
-
-	app.get('/forms', forms.showAll);
-	app.get('/forms/:form_id', forms.show);
-	app.post('/forms', forms.create);
-	app.post('/forms/:form_id', forms.newEntry);
-	app.put('/forms/:form_id', forms.update);
-}
+	app.get('/', forms.showAll);
+	app.get('/:form_id', forms.show);
+	app.post('/', forms.create);
+	app.post('/:form_id', forms.newEntry);
+	app.put('/:form_id', forms.update);
+};
