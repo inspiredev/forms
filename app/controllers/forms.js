@@ -35,6 +35,8 @@ exports.show = function (req, res) {
 		if (err) {
 			res.status(400).send(err);
 		} else {
+			// show latest entry first
+			form.entries.reverse();
 			res.render('form_single', form);
 		}
 	});
