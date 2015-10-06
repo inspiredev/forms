@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		$.ajax({
-			url: '/forms',
+			url: '/',
 			type: 'POST',
 			data: $form.serialize(),
 			success: function(data, status) {
@@ -36,7 +36,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		$.ajax({
-			url: '/forms/' + form_id,
+			url: '/' + form_id,
 			type: 'PUT',
 			data: $form.serialize(),
 			success: function(data, status) {

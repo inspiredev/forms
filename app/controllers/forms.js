@@ -28,11 +28,12 @@ exports.showAll = function (req, res) {
 exports.show = function (req, res) {
 	var form_id = req.params.form_id;
 	if (!isValidObjectID(form_id)) {
-		res.send(400, 'Form ID entered is invalid');
+		res.status(400).send('Form ID entered is invalid');
+		return;
 	}
 	Form.findById(form_id, function (err, form) {
 		if (err) {
-			res.send(400, err);
+			res.status(400).send(err);
 		} else {
 			res.render('form_single', form);
 		}
@@ -40,10 +41,11 @@ exports.show = function (req, res) {
 };
 
 exports.create = function (req, res) {
+	console.log('creating new form');
 	var form = new Form({
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
-		notifySubject: req.body['notify-email'] || 'New form submission',
+		notifySubject: req.body['notify-subject'] || 'New form submission',
 		fromEmail: req.body['from-email'],
 		fromName: req.body['from-name']
 	});
@@ -51,7 +53,7 @@ exports.create = function (req, res) {
 		if (err) {
 			console.log(err);
 		} else {
-			res.json(200, form);
+			res.status(200).json(form);
 		}
 	});
 };
@@ -68,7 +70,7 @@ exports.update = function (req, res) {
 		if (err) {
 			console.error(err);
 		} else {
-			res.json(200, form);
+			res.status(200).json(form);
 		}
 	});
 };
@@ -86,7 +88,7 @@ exports.newEntry = function (req, res) {
 		}
 	}, {},function(err, form) {
 		if (!err){
-			res.send(200);
+			res.sendStatus(200);
 			// send email notification
 			mailer.send(mailer.parse(content), {
 				from: form.fromName + ' <' + form.fromEmail + '>',

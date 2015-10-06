@@ -25,19 +25,18 @@ module.exports = function(app, config) {
 	app.set('port', config.port);
 	app.use(morgan(config.logFormat));
 	app.use(bodyParser.json());
-	app.use(bodyParser.text());
-	app.use(bodyParser.urlencoded());
+	app.use(bodyParser.urlencoded({extended: true}));
 	app.engine('.hbs', hbs.engine);
 	app.set('views', config.root + '/app/views');
 	app.set('view engine', '.hbs');
-	routes(app);
-	app.use(serveStatic(config.root + '/public'));
-	app.use(function (req, res) {
-		res.status(404).render('404', { title: '404' });
-	});
 	app.all('*', function (req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "X-Requested-With");
 		next();
+	});
+	routes(app);
+	app.use(serveStatic(config.root + '/public'));
+	app.use(function (req, res) {
+		res.status(404).render('404', { title: '404' });
 	});
 };
