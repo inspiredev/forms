@@ -36,7 +36,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		$.ajax({
-			url: '/forms' + form_id,
+			url: '/forms/' + form_id,
 			type: 'PUT',
 			data: $form.serialize(),
 			success: function(data, status) {

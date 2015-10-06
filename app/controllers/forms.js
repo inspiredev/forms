@@ -43,7 +43,6 @@ exports.show = function (req, res) {
 };
 
 exports.create = function (req, res) {
-	console.log('creating new form');
 	var form = new Form({
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
@@ -53,7 +52,7 @@ exports.create = function (req, res) {
 	});
 	form.save(function (err, form) {
 		if (err) {
-			console.log(err);
+			console.error(err);
 		} else {
 			res.status(200).json(form);
 		}
