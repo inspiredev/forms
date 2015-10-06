@@ -41,3 +41,16 @@
 		</div>
 	</div>
 </form>
+
+<h2>Form Entries</h2>
+<table class="entries table table-striped">
+	<thead>
+	</thead>
+	<tbody>
+		{{#each entries}}
+		<tr>
+			<td>{{{this}}}</td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
