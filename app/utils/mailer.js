@@ -7,7 +7,7 @@ var _ = require('lodash');
 var transporter = nodemailer.createTransport(smtpTransport({
 	service: 'Mailgun',
 	auth: {
-		user: 'inspiredforms@tridnguyen.com',
+		user: process.env.INSPIRED_FORMS_MAIL_USER,
 		pass: process.env.INSPIRED_FORMS_MAIL_PASS
 	}
 }));
