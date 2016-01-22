@@ -37,18 +37,25 @@ exports.show = function (req, res) {
 		} else {
 			// show latest entry first
 			form.entries.reverse();
+			form.requireds = form.validation.requireds.join(',');
 			res.render('form_single', form);
 		}
 	});
 };
 
 exports.create = function (req, res) {
+	var requiredFields = req.body['validation-requireds'].split(',').map(function (field) {
+		return field.trim();
+	});
 	var form = new Form({
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
 		notifySubject: req.body['notify-subject'] || 'New form submission',
 		fromEmail: req.body['from-email'],
-		fromName: req.body['from-name']
+		fromName: req.body['from-name'],
+		validation: {
+			requireds: requiredFields
+		}
 	});
 	form.save(function (err, form) {
 		if (err) {
@@ -60,12 +67,18 @@ exports.create = function (req, res) {
 };
 
 exports.update = function (req, res) {
+	var requiredFields = req.body['validation-requireds'].split(',').map(function (field) {
+		return field.trim();
+	});
 	var form = {
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
 		notifySubject: req.body['notify-subject'],
 		fromEmail: req.body['from-email'],
-		fromName: req.body['from-name']
+		fromName: req.body['from-name'],
+		validation: {
+			requireds: requiredFields
+		}
 	};
 	Form.findByIdAndUpdate(req.params.form_id, form, function (err, form) {
 		if (err) {
@@ -83,22 +96,41 @@ exports.newEntry = function (req, res) {
 			form_id: form_id,
 			content: content
 		});
-	Form.findByIdAndUpdate(form_id, {
-		$addToSet: {
-			entries: entry
+
+	Form.findById(form_id, function (err, form) {
+		if (err) {
+			return res.send(400, err);
 		}
-	}, {},function(err, form) {
-		if (!err){
-			res.sendStatus(200);
-			// send email notification
-			mailer.send(mailer.parse(content), {
-				from: form.fromName + ' <' + form.fromEmail + '>',
-				to: form.notifyEmail,
-				subject: form.notifySubject + ' #' + form.entries.length,
-				replyTo: content.name + ' <' + content.email + '>'
+		var valid = false;
+		var invalids = [];
+		if (form.validation && form.validation.requireds) {
+			form.validation.requireds.forEach(function (requiredField) {
+				if (!content[requiredField]) {
+					invalids.push(requiredField);
+				}
 			});
-		} else {
-			res.send(400, err);
+			if (invalids.length > 0) {
+				return res.send(400, new Error('Invalid form submission.'));
+			}
+			valid = true;
 		}
+		Form.findByIdAndUpdate(form_id, {
+			$addToSet: {
+				entries: entry
+			}
+		}, {},function(err, form) {
+			if (!err){
+				res.sendStatus(200);
+				// send email notification
+				mailer.send(mailer.parse(content), {
+					from: form.fromName + ' <' + form.fromEmail + '>',
+					to: form.notifyEmail,
+					subject: form.notifySubject + ' #' + form.entries.length,
+					replyTo: content.name + ' <' + content.email + '>'
+				});
+			} else {
+				res.send(400, err);
+			}
+		});
 	});
 };

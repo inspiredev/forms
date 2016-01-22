@@ -12,6 +12,9 @@ var formSchema = new Schema({
 	notifySubject: String,
 	fromName: String,
 	fromEmail: String,
+	validation: {
+		requireds: [String]
+	},
 	entries: [entrySchema]
 });
 
