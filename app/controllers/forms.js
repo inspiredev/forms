@@ -1,53 +1,53 @@
 'use strict';
 
-var _ = require('lodash'),
-	mongoose = require('mongoose'),
-	Form = mongoose.model('Form'),
-	Entry = mongoose.model('Entry'),
-	mailer = require('../utils/mailer');
-
-// Check for valid ID
-function isValidObjectID(str) {
-	var len = str.length;
-	if (len === 12 || len === 24) {
-		return /^[0-9a-fA-F]+$/.test(str);
-	} else {
-		return false;
-	}
-}
+var _ = require('lodash');
+var db = require('../../db');
+var mailer = require('../utils/mailer');
 
 exports.showAll = function (req, res) {
-	Form.find(function (err, forms) {
-		if (err) throw new Error(err);
-		// res.write(JSON.stringify(forms));
-		// res.end();
-		res.render('forms', forms);
-	});
+	res.render('forms');
 };
 
 exports.show = function (req, res) {
-	var form_id = req.params.form_id;
-	if (!isValidObjectID(form_id)) {
-		res.status(400).send('Form ID entered is invalid');
-		return;
-	}
-	Form.findById(form_id, function (err, form) {
+	var formId = req.params.form_id;
+	db.get('form!' + formId, function (err, form) {
 		if (err) {
-			res.status(400).send(err);
-		} else {
-			// show latest entry first
-			form.entries.reverse();
-			form.requireds = form.validation.requireds.join(',');
-			res.render('form_single', form);
+			console.error(err);
+			if (err.notFound) {
+				res.status(404);
+			} else {
+				res.status(400);
+			}
+			return res.send();
 		}
+		form.requireds = form.validation.requireds.join(',');
+		var entries;
+		db.createReadStream({
+			gte: 'entry!' + formId + '!',
+			lte: 'entry!' + formId + '!~'
+		})
+		.on('data', function (entry) {
+			// pass back the id, which is the timestamp of the article
+			// remove all other database prefixes
+			entries = [Object.assign({}, entry.value, {id: entry.key.split('!').pop()})].concat(entries);
+		})
+		.on('error', function (err) {
+			console.error(err);
+			res.send(err);
+		})
+		.on('close', function () {
+			form.entries = entries;
+			res.render('form_single', form);
+		});
 	});
 };
 
 exports.create = function (req, res) {
+	var id = Date.now();
 	var requiredFields = req.body['validation-requireds'].split(',').map(function (field) {
 		return field.trim();
 	});
-	var form = new Form({
+	db.put('form!' + id, {
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
 		notifySubject: req.body['notify-subject'] || 'New form submission',
@@ -56,21 +56,27 @@ exports.create = function (req, res) {
 		validation: {
 			requireds: requiredFields
 		}
-	});
-	form.save(function (err, form) {
+	}, function (err) {
 		if (err) {
 			console.error(err);
-		} else {
-			res.status(200).json(form);
+			return res.status(400).send();
 		}
+		res.status(200).json({
+			created: true,
+			id: id
+		});
 	});
 };
 
 exports.update = function (req, res) {
+	var id = req.params.form_id;
+	if (!id) {
+		return res.status(400).send('Missing form ID.');
+	}
 	var requiredFields = req.body['validation-requireds'].split(',').map(function (field) {
 		return field.trim();
 	});
-	var form = {
+	var updatedForm = {
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
 		notifySubject: req.body['notify-subject'],
@@ -80,28 +86,31 @@ exports.update = function (req, res) {
 			requireds: requiredFields
 		}
 	};
-	Form.findByIdAndUpdate(req.params.form_id, form, function (err, form) {
+	db.get('form!' + id, function (err, form) {
 		if (err) {
-			console.error(err);
-		} else {
-			res.status(200).json(form);
+			return res.status(400).send();
 		}
+		db.put('form!' + id, Object.assign({}, form, updatedForm), function (err) {
+			if (err) {
+				return res.status(400).send();
+			}
+			return res.status(200).json({
+				updated: true
+			});
+		});
 	});
 };
 
 exports.newEntry = function (req, res) {
-	var content = _.omit(req.body, 'form_id'),
-		form_id = req.body.form_id,
-		entry = new Entry({
-			form_id: form_id,
-			content: content
-		});
+	var content = _.omit(req.body, 'form_id');
+	var formId = req.body.form_id;
+	var entryId = Date.now();
 
-	Form.findById(form_id, function (err, form) {
+	db.get('form!' + formId, function (err, form) {
 		if (err) {
-			return res.send(400, err);
+			console.error('Unable to find form ' + formId + ' ' + err);
+			return res.status(400).send();
 		}
-		var valid = false;
 		var invalids = [];
 		if (form.validation && form.validation.requireds) {
 			form.validation.requireds.forEach(function (requiredField) {
@@ -110,27 +119,24 @@ exports.newEntry = function (req, res) {
 				}
 			});
 			if (invalids.length > 0) {
-				return res.send(400, new Error('Invalid form submission.'));
+				return res.status(400).send('Invalid form submission.');
 			}
-			valid = true;
 		}
-		Form.findByIdAndUpdate(form_id, {
-			$addToSet: {
-				entries: entry
+		db.put('entry!form' + formId + '!' + entryId, content, function (err) {
+			if (err) {
+				console.error('Unable to add entry ' + err);
+				return res.status(400).send('Unable to submit form.');
 			}
-		}, {},function(err, form) {
-			if (!err){
-				res.sendStatus(200);
-				// send email notification
-				mailer.send(mailer.parse(content), {
-					from: form.fromName + ' <' + form.fromEmail + '>',
-					to: form.notifyEmail,
-					subject: form.notifySubject + ' #' + form.entries.length,
-					replyTo: content.name + ' <' + content.email + '>'
-				});
-			} else {
-				res.send(400, err);
-			}
+			res.status(200).json({
+				submitted: true
+			});
+			// send email notification
+			mailer.send(mailer.parse(content), {
+				from: form.fromName + ' <' + form.fromEmail + '>',
+				to: form.notifyEmail,
+				subject: form.notifySubject + ' #' + form.entries.length,
+				replyTo: content.name + ' <' + content.email + '>'
+			});
 		});
 	});
 };
