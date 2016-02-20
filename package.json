@@ -5,12 +5,12 @@
   "main": "app.js",
   "dependencies": {
     "body-parser": "^1.14.1",
-    "bootstrap": "^3.3.5",
     "bootstrap-sass": "^3.3.6",
     "compression": "^1.6.0",
     "dotenv": "^2.0.0",
     "express": "~4.13.3",
     "express-handlebars": "^2.0.1",
+    "forever": "^0.15.1",
     "level": "^1.4.0",
     "lodash": "~3.10.1",
     "morgan": "^1.6.1",
@@ -34,8 +34,9 @@
     "js": "browserify client/main.js -o public/js/main.js",
     "js:watch": "watchify client/main.js -o public/js/main.js -dv",
     "build": "npm run css && npm run js",
-    "server": "nodemon app.js",
-    "start": "npm run build && npm run css:watch & npm run js:watch & npm run server"
+    "server:dev": "nodemon --debug app.js",
+    "dev": "npm run build && npm run css:watch & npm run js:watch & npm run server:dev",
+    "start": "npm run build && forever start app.js"
   },
   "repository": {
     "type": "git",
