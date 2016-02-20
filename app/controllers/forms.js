@@ -122,7 +122,7 @@ exports.newEntry = function (req, res) {
 				return res.status(400).send('Invalid form submission.');
 			}
 		}
-		db.put('entry!form' + formId + '!' + entryId, content, function (err) {
+		db.put('entry!' + formId + '!' + entryId, content, function (err) {
 			if (err) {
 				console.error('Unable to add entry ' + err);
 				return res.status(400).send('Unable to submit form.');
