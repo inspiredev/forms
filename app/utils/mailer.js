@@ -20,9 +20,9 @@ var mailOptions = {
 };
 
 // convert form entry into email content
-var parseContent = function(results) {
+var parseContent = function (results) {
 	var content = '';
-	_.each(results, function(value, key){
+	_.each(results, function (value, key) {
 		content += key + ': ';
 		content += value + '\n\n';
 	});
@@ -41,7 +41,7 @@ var nl2br = function (str, is_xhtml) {
 	return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 };
 
-var sendMail = function(content, options){
+var sendMail = function (content, options) {
 	// if there are options, parse them
 	if (!_.isEmpty(options)) {
 		_.extend(mailOptions, options);
@@ -49,14 +49,14 @@ var sendMail = function(content, options){
 	mailOptions.text = content;
 	mailOptions.html = nl2br(content);
 	transporter.sendMail(mailOptions, function (err, response) {
-		if (err){
+		if (err) {
 			console.error(err);
-		} else{
+		} else {
 			console.log('Message sent: ' + response.message);
 		}
 
 		// if you don't want to use this transport object anymore, uncomment following line
-		//transporter.close(); // shut down the connection pool, no more messages
+		// transporter.close(); // shut down the connection pool, no more messages
 	});
 };
 
