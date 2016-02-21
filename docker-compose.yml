@@ -1,6 +1,6 @@
 version: '2'
 services:
-  read:
+  forms:
     build: .
     ports:
      - "13041:3000"
