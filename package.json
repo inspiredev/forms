@@ -30,7 +30,7 @@
   "scripts": {
     "clean": "rm -rf public && mkdir public",
     "css": "node-sass sass/main.scss | postcss --use autoprefixer -o public/main.css",
-    "css:watch": "node-sass --watch sass/main.scss public/main.css & postcss --use autoprefixer -o public/css/main.css public/main.css",
+    "css:watch": "node-sass --watch sass/main.scss public/main.css & postcss --use autoprefixer -o public/main.css public/main.css",
     "js": "browserify client/main.js -o public/main.js",
     "js:watch": "watchify client/main.js -o public/main.js -dv",
     "build": "npm run clean && npm run css && npm run js",
