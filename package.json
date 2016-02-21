@@ -1,6 +1,6 @@
 {
   "name": "inspired-forms",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "personal node form processing",
   "main": "app.js",
   "dependencies": {
