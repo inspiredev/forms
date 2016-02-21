@@ -10,7 +10,6 @@
     "dotenv": "^2.0.0",
     "express": "~4.13.4",
     "express-handlebars": "^3.0.0",
-    "forever": "^0.15.1",
     "level": "^1.4.0",
     "lodash": "~4.5.0",
     "morgan": "^1.7.0",
@@ -29,15 +28,15 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-	"clean": "rm -rf public && mkdir public",
+    "clean": "rm -rf public && mkdir public",
     "css": "node-sass sass/main.scss | postcss --use autoprefixer -o public/main.css",
     "css:watch": "node-sass --watch sass/main.scss public/main.css & postcss --use autoprefixer -o public/css/main.css public/main.css",
     "js": "browserify client/main.js -o public/main.js",
     "js:watch": "watchify client/main.js -o public/main.js -dv",
     "build": "npm run clean && npm run css && npm run js",
-    "server:dev": "nodemon --debug app.js",
+    "server:dev": "nodemon app.js",
     "dev": "npm run build && npm run css:watch & npm run js:watch & npm run server:dev",
-    "start": "npm run build && forever start app.js"
+    "start": "npm run build && node app.js"
   },
   "repository": {
     "type": "git",
