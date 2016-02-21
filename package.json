@@ -29,11 +29,12 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "css": "node-sass sass/main.scss | postcss --use autoprefixer -o public/css/main.css",
-    "css:watch": "node-sass --watch sass/main.scss public/css/main.css & postcss --use autoprefixer -o public/css/main.css public/css/main.css",
-    "js": "browserify client/main.js -o public/js/main.js",
-    "js:watch": "watchify client/main.js -o public/js/main.js -dv",
-    "build": "npm run css && npm run js",
+	"clean": "rm -rf public && mkdir public",
+    "css": "node-sass sass/main.scss | postcss --use autoprefixer -o public/main.css",
+    "css:watch": "node-sass --watch sass/main.scss public/main.css & postcss --use autoprefixer -o public/css/main.css public/main.css",
+    "js": "browserify client/main.js -o public/main.js",
+    "js:watch": "watchify client/main.js -o public/main.js -dv",
+    "build": "npm run clean && npm run css && npm run js",
     "server:dev": "nodemon --debug app.js",
     "dev": "npm run build && npm run css:watch & npm run js:watch & npm run server:dev",
     "start": "npm run build && forever start app.js"

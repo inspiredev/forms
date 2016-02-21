@@ -39,6 +39,7 @@ app.all('*', function (req, res, next) {
 	next();
 });
 
+app.use(serveStatic('public'));
 // routes
 app.get('/', forms.showAll);
 app.get('/:form_id', forms.show);
@@ -46,7 +47,6 @@ app.post('/', forms.create);
 app.post('/:form_id', forms.newEntry);
 app.put('/:form_id', forms.update);
 
-app.use(serveStatic('public'));
 app.use(function (req, res) {
 	res.status(404).render('404', { title: '404' });
 });
