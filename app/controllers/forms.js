@@ -8,6 +8,26 @@ exports.showAll = function (req, res) {
 	res.render('forms');
 };
 
+function getFormEntries (formId, callback) {
+	var entries = [];
+	db.createReadStream({
+		gte: 'entry!' + formId + '!',
+		lte: 'entry!' + formId + '!~'
+	})
+	.on('data', function (entry) {
+		// pass back the id, which is the timestamp of the article
+		// remove all other database prefixes
+		entries = [Object.assign({}, entry.value, {id: entry.key.split('!').pop()})].concat(entries);
+	})
+	.on('error', function (err) {
+		console.error(err);
+		callback(err);
+	})
+	.on('close', function () {
+		callback(null, entries);
+	});
+}
+
 exports.show = function (req, res) {
 	var formId = req.params.form_id;
 	db.get('form!' + formId, function (err, form) {
@@ -21,21 +41,10 @@ exports.show = function (req, res) {
 			return res.send();
 		}
 		form.requireds = form.validation.requireds.join(',');
-		var entries = [];
-		db.createReadStream({
-			gte: 'entry!' + formId + '!',
-			lte: 'entry!' + formId + '!~'
-		})
-		.on('data', function (entry) {
-			// pass back the id, which is the timestamp of the article
-			// remove all other database prefixes
-			entries = [Object.assign({}, entry.value, {id: entry.key.split('!').pop()})].concat(entries);
-		})
-		.on('error', function (err) {
-			console.error(err);
-			res.send(err);
-		})
-		.on('close', function () {
+		getFormEntries(formId, function (err, entries) {
+			if (err) {
+				return res.status(400).send(err);
+			}
 			form.entries = entries;
 			res.render('form_single', form);
 		});
@@ -131,11 +140,18 @@ exports.newEntry = function (req, res) {
 				submitted: true
 			});
 			// send email notification
-			mailer.send(mailer.parse(content), {
-				from: form.fromName + ' <' + form.fromEmail + '>',
-				to: form.notifyEmail,
-				subject: form.notifySubject + ' #' + form.entries.length,
-				replyTo: content.name + ' <' + content.email + '>'
+
+			// get the final entries length
+			getFormEntries(formId, function (err, entries) {
+				if (err) {
+					return;
+				}
+				mailer.send(mailer.parse(content), {
+					from: form.fromName + ' <' + form.fromEmail + '>',
+					to: form.notifyEmail,
+					subject: form.notifySubject + ' #' + entries.length,
+					replyTo: content.name + ' <' + content.email + '>'
+				});
 			});
 		});
 	});
