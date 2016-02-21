@@ -7,3 +7,8 @@
 h1 {
 	text-align: center;
 }
+
+pre {
+	// make sure form entry pre element don't overflow the width
+	white-space: pre-wrap;
+}

@@ -19,7 +19,10 @@ var hbs = exphbs.create({
 	layoutsDir: __dirname + '/app/views/layouts',
 	defaultLayout: 'main',
 	helpers: {
-		debug: console.log
+		debug: console.log,
+		json: function (stuff) {
+			return JSON.stringify(stuff, undefined, 2);
+		}
 	}
 });
 

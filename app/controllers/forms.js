@@ -21,7 +21,7 @@ exports.show = function (req, res) {
 			return res.send();
 		}
 		form.requireds = form.validation.requireds.join(',');
-		var entries;
+		var entries = [];
 		db.createReadStream({
 			gte: 'entry!' + formId + '!',
 			lte: 'entry!' + formId + '!~'

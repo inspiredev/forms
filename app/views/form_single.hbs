@@ -50,13 +50,13 @@
 </form>
 
 <h2>Form Entries</h2>
-<table class="entries table table-striped">
+<table class="entries">
 	<thead>
 	</thead>
 	<tbody>
 		{{#each entries}}
 		<tr>
-			<td>{{{this}}}</td>
+			<td><pre>{{json this}}</pre></td>
 		</tr>
 		{{/each}}
 	</tbody>
