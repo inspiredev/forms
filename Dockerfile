@@ -1,3 +1,9 @@
-FROM node:onbuild
+FROM mhart/alpine-node:5.6
 
-RUN npm install -g grunt-cli
+WORKDIR /src
+
+COPY package.json /src/
+RUN npm install
+COPY . /src/
+
+CMD ["npm", "start"]

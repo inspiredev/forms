@@ -1,12 +1,9 @@
-forms:
-  build: .
-  ports:
-   - "13041:3000"
-  links:
-   - db:mongodb
-  env_file: .env
-
-db:
-  image: mongo
-  volumes:
-   - ./data/db:/data/db
+version: '2'
+services:
+  read:
+    build: .
+    ports:
+     - "13041:3000"
+    env_file: .env
+    volumes:
+     - ./data:/src/data
