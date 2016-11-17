@@ -2,7 +2,15 @@
 
 /* global jQuery */
 jQuery(document).ready(function ($) {
-	console.log('ready!');
+	// toggle notify-email field type
+	$('[name=notify-email-type]').on('change', function (e) {
+		var type = $(e.target).val();
+		if (type !== 'email') {
+			$('[name=notify-email]').attr('type', 'text');
+		} else {
+			$('[name=notify-email]').attr('type', 'email');
+		}
+	});
 	$('#new-form-submit').on('click', function (e) {
 		e.preventDefault();
 		var $form = $('#new-form');

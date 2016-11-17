@@ -116,8 +116,8 @@ exports.update = function (req, res) {
 };
 
 exports.newEntry = function (req, res) {
-	var content = _.omit(req.body, 'form_id');
 	var formId = req.body.form_id;
+	var content = _.omit(req.body, 'form_id');
 	var entryId = Date.now();
 
 	db.get('form!' + formId, function (err, form) {
@@ -151,9 +151,14 @@ exports.newEntry = function (req, res) {
 				if (err) {
 					return;
 				}
+				var toAddress = form.notifyEmail;
+				// if notify email address is to be mapped to a field
+				if (form.notifyEmailType && form.notifyEmailType === 'field') {
+					toAddress = content[form.notifyEmail];
+				}
 				mailer.send(mailer.parse(content), {
 					from: form.fromName + ' <' + form.fromEmail + '>',
-					to: form.notifyEmail,
+					to: toAddress,
 					subject: form.notifySubject + ' #' + entries.length,
 					replyTo: content.name + ' <' + content.email + '>'
 				});
