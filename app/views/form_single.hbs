@@ -1,56 +1,55 @@
 <div class="alert"></div>
 <form id="edit-form" class="form-horizontal" role="form" action="/forms" method="post" data-id="{{_id}}">
 	<h2>Edit Form</h2>
-	<div class="form-group">
-		<label class="control-label col-sm-3" for="name">Form Name</label>
+	<div class="form-group row">
+		<label class="col-form-label col-sm-3" for="name">Form Name</label>
 		<div class="col-sm-7">
 			<input class="form-control" type="text" name="name" value="{{name}}"/>
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label col-sm-3" for="from-name">Notification Email 'From' Name</label>
+	<div class="form-group row">
+		<label class="col-form-label col-sm-3" for="from-name">Notification Email 'From' Name</label>
 		<div class="col-sm-7">
 			<input class="form-control" type="text" name="from-name" value="{{fromName}}"/>
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label col-sm-3" for="from-address">Notification Email 'From' Address</label>
+	<div class="form-group row">
+		<label class="col-form-label col-sm-3" for="from-address">Notification Email 'From' Address</label>
 		<div class="col-sm-7">
 			<input class="form-control" type="text" name="from-email" placeholder="noreply@inspiredev.co" value="{{fromEmail}}"/>
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label col-sm-3" for="notify-subject">Notification Email Subject</label>
+	<div class="form-group row">
+		<label class="col-form-label col-sm-3" for="notify-subject">Notification Email Subject</label>
 		<div class="col-sm-7">
 			<input class="form-control" type="text" name="notify-subject" placeholder="New Form Submission" value="{{notifySubject}}"/>
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label col-sm-3" for="notify-email">Notification Email Address</label>
+	<div class="form-group row">
+		<label class="col-form-label col-sm-3" for="notify-email">Notification Email Address</label>
 		<div class="col-sm-7">
 			<input class="form-control" type="email" name="notify-email" value="{{notifyEmail}}"/>
 		</div>
 	</div>
-	{{!-- <div class="form-group">
-		<label class="control-label col-sm-3" for="requireds">Required Fields</label>
+	{{!-- <div class="form-group row">
+		<label class="con-form-label col-sm-3" for="requireds">Required Fields</label>
 		<div class="col-sm-7">
 			<input class="form-control" type="text" id="requireds" name="validation-requireds" value="{{requireds}}"/>
 		</div>
-	</div>
-	--}}
-	<div class="form-group">
-		<label class="control-label col-sm-3">Number of entries</label>
+	</div> --}}
+	<div class="form-group row">
+		<label class="col-form-label col-sm-3">Number of entries</label>
 		<div class="col-sm-7 form-control-static">{{entries.length}}</div>
 	</div>
-	<div class="form-group">
-		<div class="col-sm-2 col-sm-push-9">
+	<div class="form-group row">
+		<div class="offset-sm-3 col-sm-9">
 			<input id="edit-form-submit" class="btn btn-primary" type="submit" value="Save"/>
 		</div>
 	</div>
 </form>
 
 <h2>Form Entries</h2>
-<table class="entries">
+<table class="entries table">
 	<thead>
 	</thead>
 	<tbody>
