@@ -1,16 +1,24 @@
 'use strict';
 
 /* global jQuery */
+
+function updateNotifyEmailFieldType (typeField) {
+	if (!typeField) {
+		return;
+	}
+	var type = $(typeField).val();
+	if (type !== 'email') {
+		$('[name=notify-email]').attr('type', 'text');
+	} else {
+		$('[name=notify-email]').attr('type', 'email');
+	}
+}
 jQuery(document).ready(function ($) {
 	// toggle notify-email field type
 	$('[name=notify-email-type]').on('change', function (e) {
-		var type = $(e.target).val();
-		if (type !== 'email') {
-			$('[name=notify-email]').attr('type', 'text');
-		} else {
-			$('[name=notify-email]').attr('type', 'email');
-		}
+		updateNotifyEmailFieldType(e.target);
 	});
+	updateNotifyEmailFieldType(document.querySelector('[name=notify-email-type]'));
 	$('#new-form-submit').on('click', function (e) {
 		e.preventDefault();
 		var $form = $('#new-form');

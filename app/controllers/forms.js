@@ -62,6 +62,7 @@ exports.create = function (req, res) {
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
 		notifyEmailType: req.body['notify-email-type'],
+		notifyEmailCc: req.body['notify-email-cc'] || '',
 		notifySubject: req.body['notify-subject'] || 'New form submission',
 		fromEmail: req.body['from-email'],
 		fromName: req.body['from-name'],
@@ -98,6 +99,9 @@ exports.update = function (req, res) {
 			return field.trim();
 		});
 		updatedForm.validation.required = requiredFields;
+	}
+	if (req.body['notify-email-cc']) {
+		updatedForm.notifyEmailCc = req.body['notify-email-cc'];
 	}
 	db.get('form!' + id, function (err, form) {
 		if (err) {
@@ -159,6 +163,7 @@ exports.newEntry = function (req, res) {
 				mailer.send(mailer.parse(content), {
 					from: form.fromName + ' <' + form.fromEmail + '>',
 					to: toAddress,
+					cc: form.notifyEmailCc || '',
 					subject: form.notifySubject + ' #' + entries.length,
 					replyTo: content.name + ' <' + content.email + '>'
 				});
