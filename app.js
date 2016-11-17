@@ -23,6 +23,13 @@ var hbs = exphbs.create({
 		debug: console.log,
 		json: function (stuff) {
 			return JSON.stringify(stuff, undefined, 2);
+		},
+		eq: function (a, b, options) {
+			if (a === b) {
+				return options.fn(this);
+			} else {
+				return options.inverse(this);
+			}
 		}
 	}
 });

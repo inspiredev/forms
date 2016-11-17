@@ -61,6 +61,7 @@ exports.create = function (req, res) {
 	db.put('form!' + id, {
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
+		notifyEmailType: req.body['notify-email-type'],
 		notifySubject: req.body['notify-subject'] || 'New form submission',
 		fromEmail: req.body['from-email'],
 		fromName: req.body['from-name'],
@@ -87,6 +88,7 @@ exports.update = function (req, res) {
 	var updatedForm = {
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
+		notifyEmailType: req.body['notify-email-type'],
 		notifySubject: req.body['notify-subject'],
 		fromEmail: req.body['from-email'],
 		fromName: req.body['from-name']

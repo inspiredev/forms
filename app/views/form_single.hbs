@@ -3,43 +3,49 @@
 	<h2>Edit Form</h2>
 	<div class="form-group row">
 		<label class="col-form-label col-sm-3" for="name">Form Name</label>
-		<div class="col-sm-7">
+		<div class="col-sm-9">
 			<input class="form-control" type="text" name="name" value="{{name}}"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<label class="col-form-label col-sm-3" for="from-name">Notification Email 'From' Name</label>
-		<div class="col-sm-7">
+		<div class="col-sm-9">
 			<input class="form-control" type="text" name="from-name" value="{{fromName}}"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<label class="col-form-label col-sm-3" for="from-address">Notification Email 'From' Address</label>
-		<div class="col-sm-7">
+		<div class="col-sm-9">
 			<input class="form-control" type="text" name="from-email" placeholder="noreply@inspiredev.co" value="{{fromEmail}}"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<label class="col-form-label col-sm-3" for="notify-subject">Notification Email Subject</label>
-		<div class="col-sm-7">
+		<div class="col-sm-9">
 			<input class="form-control" type="text" name="notify-subject" placeholder="New Form Submission" value="{{notifySubject}}"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<label class="col-form-label col-sm-3" for="notify-email">Notification Email Address</label>
-		<div class="col-sm-7">
+		<div class="col-sm-6">
 			<input class="form-control" type="email" name="notify-email" value="{{notifyEmail}}"/>
+		</div>
+		<div class="col-sm-3">
+			<select class="form-control" name="notify-email-type">
+				<option value="email" {{#eq notifyEmailType "email"}}selected{{/eq}}>Email</option>
+					<option value="field" {{#eq notifyEmailType "field"}}selected{{/eq}}>Field</option>
+			</select>
 		</div>
 	</div>
 	{{!-- <div class="form-group row">
 		<label class="con-form-label col-sm-3" for="requireds">Required Fields</label>
-		<div class="col-sm-7">
+		<div class="col-sm-9">
 			<input class="form-control" type="text" id="requireds" name="validation-requireds" value="{{requireds}}"/>
 		</div>
 	</div> --}}
 	<div class="form-group row">
 		<label class="col-form-label col-sm-3">Number of entries</label>
-		<div class="col-sm-7 form-control-static">{{entries.length}}</div>
+		<div class="col-sm-9 form-control-static">{{entries.length}}</div>
 	</div>
 	<div class="form-group row">
 		<div class="offset-sm-3 col-sm-9">
