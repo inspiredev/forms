@@ -52,7 +52,7 @@ var sendMail = function (content, options) {
 		if (err) {
 			console.error(err);
 		} else {
-			console.log('Message sent: ' + response.message);
+			console.log('Message sent: ' + response);
 		}
 
 		// if you don't want to use this transport object anymore, uncomment following line
