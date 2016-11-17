@@ -7,6 +7,7 @@ var exphbs = require('express-handlebars');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
+var path = require('path');
 
 var forms = require('./app/controllers/forms');
 
@@ -16,7 +17,7 @@ var app = express();
 // hbs engine
 var hbs = exphbs.create({
 	extname: '.hbs',
-	layoutsDir: __dirname + '/app/views/layouts',
+	layoutsDir: path.join(__dirname, '/app/views/layouts'),
 	defaultLayout: 'main',
 	helpers: {
 		debug: console.log,

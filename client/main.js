@@ -1,22 +1,20 @@
 'use strict';
 
 /* global jQuery */
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 	console.log('ready!');
-	$('#new-form-submit').on('click', function(e) {
+	$('#new-form-submit').on('click', function (e) {
 		e.preventDefault();
-		var $form = $("#new-form");
-		$form.validate({
-
-		});
+		var $form = $('#new-form');
+		$form.validate({});
 		if (!$form.valid()) {
 			return;
 		}
 		$.ajax({
-			url: '/forms',
+			url: window.location.href,
 			type: 'POST',
 			data: $form.serialize(),
-			success: function(data, status) {
+			success: function (data, status) {
 				var successMessage = '';
 				successMessage += '<p>Your form has been created.</p>';
 				successMessage += '<p>You can start POSTing entries to it at http://inspired-forms.herokuapp.com/forms/' + data._id;
@@ -25,21 +23,18 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
-	$('#edit-form-submit').on('click', function(e) {
+	$('#edit-form-submit').on('click', function (e) {
 		e.preventDefault();
-		var $form = $("#edit-form"),
-			form_id = $form.data('id');
-		$form.validate({
-
-		});
+		var $form = $('#edit-form');
+		$form.validate({});
 		if (!$form.valid()) {
 			return;
 		}
 		$.ajax({
-			url: '/forms/' + form_id,
+			url: window.location.href,
 			type: 'PUT',
 			data: $form.serialize(),
-			success: function(data, status) {
+			success: function (data, status) {
 				var successMessage = '';
 				successMessage += '<p>Your form has been saved.</p>';
 				$('.alert').html(successMessage).addClass('alert-success');

@@ -40,6 +40,8 @@ exports.show = function (req, res) {
 			}
 			return res.send();
 		}
+		// add formId to form
+		form.id = formId;
 		form.requireds = form.validation.requireds.join(',');
 		getFormEntries(formId, function (err, entries) {
 			if (err) {
@@ -82,21 +84,22 @@ exports.update = function (req, res) {
 	if (!id) {
 		return res.status(400).send('Missing form ID.');
 	}
-	var requiredFields = req.body['validation-requireds'].split(',').map(function (field) {
-		return field.trim();
-	});
 	var updatedForm = {
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
 		notifySubject: req.body['notify-subject'],
 		fromEmail: req.body['from-email'],
-		fromName: req.body['from-name'],
-		validation: {
-			requireds: requiredFields
-		}
+		fromName: req.body['from-name']
 	};
+	if (req.body['validation-required']) {
+		var requiredFields = req.body['validation-requireds'].split(',').map(function (field) {
+			return field.trim();
+		});
+		updatedForm.validation.required = requiredFields;
+	}
 	db.get('form!' + id, function (err, form) {
 		if (err) {
+			console.log('Unable to get form ' + id);
 			return res.status(400).send();
 		}
 		db.put('form!' + id, Object.assign({}, form, updatedForm), function (err) {
