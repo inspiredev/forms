@@ -28,7 +28,7 @@
 	<div class="form-group row">
 		<label class="col-form-label col-sm-3" for="notify-email">Notification Email Address</label>
 		<div class="col-sm-6">
-			<input class="form-control" type="email" name="notify-email" value="{{notifyEmail}}"/>
+			<input class="form-control" type="{{#eq notifyEmailType "email"}}email{{else}}text{{/eq}}" name="notify-email" value="{{notifyEmail}}"/>
 		</div>
 		<div class="col-sm-3">
 			<select class="form-control" name="notify-email-type">
