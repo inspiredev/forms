@@ -6,10 +6,7 @@ COPY package.json /src/
 RUN chown -R app:app /src/
 
 WORKDIR /src
-# install deps for node-gyp (by node-sass)
-RUN apk add --no-cache python make g++ && \
-  npm install && \
-  apk del python make g++
+RUN npm install
 
 COPY . /src/
 
