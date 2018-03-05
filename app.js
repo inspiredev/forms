@@ -47,7 +47,7 @@ app.all('*', function (req, res, next) {
 	next();
 });
 
-app.use(serveStatic('public'));
+app.use('/forms', serveStatic('public'));
 // routes
 app.get('/forms', forms.showAll);
 app.get('/forms/:form_id', forms.show);
