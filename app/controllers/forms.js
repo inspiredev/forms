@@ -5,7 +5,22 @@ var db = require('../../db');
 var mailer = require('../utils/mailer');
 
 exports.showAll = function (req, res) {
-	res.render('forms');
+	var forms = [];
+	db.createReadStream({
+		gte: 'form!',
+		lte: 'form!~'
+	})
+		.on('data', function (form) {
+			forms = [Object.assign({}, form.value, {id: form.key.split('!').pop()})].concat(forms);
+		})
+		.on('error', function (err) {
+			console.error(err);
+			res.status(400);
+			return res.send();
+		})
+		.on('close', function () {
+			res.render('forms', {forms});
+		})
 };
 
 function getFormEntries (formId, callback) {
