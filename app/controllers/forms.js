@@ -19,6 +19,9 @@ exports.showAll = function (req, res) {
 			return res.send();
 		})
 		.on('close', function () {
+			if (req.query.type == 'json') {
+				return res.json(forms);
+			}
 			res.render('forms', {forms});
 		})
 };
@@ -63,6 +66,9 @@ exports.show = function (req, res) {
 				return res.status(400).send(err);
 			}
 			form.entries = entries;
+			if (req.query.type == 'json') {
+				return res.json(form);
+			}
 			res.render('form_single', form);
 		});
 	});
