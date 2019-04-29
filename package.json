@@ -10,10 +10,10 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
-    "forever": "^1.0.0",
     "level": "^3.0.0",
     "lodash": "^4.17.11",
     "lodash.chunk": "^4.2.0",
+    "lodash.omit": "^4.5.0",
     "morgan": "^1.9.1",
     "nodemailer": "^4.6.0",
     "nodemailer-smtp-transport": "^2.4.1",
@@ -26,8 +26,8 @@
     "nodemon": "^1.18.11"
   },
   "scripts": {
-    "dev": "nodemon app.js",
-    "start": "forever app.js"
+    "start": "PORT=13041 nodemon app.js",
+    "server": "node app.js"
   },
   "repository": {
     "type": "git",
