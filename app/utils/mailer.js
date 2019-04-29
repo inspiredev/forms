@@ -2,7 +2,6 @@
 
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
-var _ = require('lodash');
 
 var transporter = nodemailer.createTransport(smtpTransport({
 	service: 'Mailgun',
@@ -21,12 +20,9 @@ var mailOptions = {
 
 // convert form entry into email content
 var parseContent = function (results) {
-	var content = '';
-	_.each(results, function (value, key) {
-		content += key + ': ';
-		content += value + '\n\n';
-	});
-	return content;
+	return Object.keys(results).map(key => `${key}: ${results[key]}`)
+		.join('\n\n');
+
 };
 
 var nl2br = function (str, is_xhtml) {
@@ -42,10 +38,8 @@ var nl2br = function (str, is_xhtml) {
 };
 
 var sendMail = function (content, options) {
-	// if there are options, parse them
-	if (!_.isEmpty(options)) {
-		_.extend(mailOptions, options);
-	}
+	Object.assign(mailOptions, options);
+
 	mailOptions.text = content;
 	mailOptions.html = nl2br(content);
 	transporter.sendMail(mailOptions, function (err, response) {
