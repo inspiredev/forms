@@ -135,22 +135,22 @@ exports.newEntry = function (req, res) {
 			res.status(200).json({
 				submitted: true
 			});
-		});
-	}).then(() => {
-		// send email notification
-		const entriesCollectionRef = firestore.collection(`forms/${formId}/entries`);
-		entriesCollectionRef.get().then(entriesCollectionSnapshot => {
-			const toAddress = form.notifyEmail;
-			// if notify email address is to be mapped to a field
-			if (form.notifyEmailType && form.notifyEmailType === 'field') {
-				toAddress = content[form.notifyEmail];
-			}
-			mailer.send(mailer.parse(content), {
-				from: form.fromName + ' <' + form.fromEmail + '>',
-				to: toAddress,
-				cc: form.notifyEmailCc || '',
-				subject: form.notifySubject + ' #' + entriesCollectionSnapshot.size,
-				replyTo: content.name + ' <' + content.email + '>'
+		}).then(() => {
+			// send email notification
+			const entriesCollectionRef = firestore.collection(`forms/${formId}/entries`);
+			return entriesCollectionRef.get().then(entriesCollectionSnapshot => {
+				const toAddress = form.notifyEmail;
+				// if notify email address is to be mapped to a field
+				if (form.notifyEmailType && form.notifyEmailType === 'field') {
+					toAddress = content[form.notifyEmail];
+				}
+				mailer.send(mailer.parse(content), {
+					from: form.fromName + ' <' + form.fromEmail + '>',
+					to: toAddress,
+					cc: form.notifyEmailCc || '',
+					subject: form.notifySubject + ' #' + entriesCollectionSnapshot.size,
+					replyTo: content.name + ' <' + content.email + '>'
+				});
 			});
 		});
 	}).then(null, err => {
