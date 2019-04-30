@@ -1,7 +1,6 @@
 'use strict';
 
 const omit = require('lodash.omit');
-const db = require('../../db');
 const firestore = require('@tridnguyen/firestore');
 const mailer = require('../utils/mailer');
 
