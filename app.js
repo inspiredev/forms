@@ -10,6 +10,7 @@ var serveStatic = require('serve-static');
 var path = require('path');
 
 var forms = require('./app/controllers/forms');
+var logger = require('./app/utils/logger');
 
 var app = express();
 
@@ -65,6 +66,8 @@ app.put('/forms/:form_id', forms.update);
 app.use(function (req, res) {
 	res.status(404).render('404', { title: '404' });
 });
+
+app.use(logger.errorHandler());
 
 app.listen(process.env.PORT || 3000, function () {
 	console.log('Express server is listening on port 3000 in %s mode', app.settings.env);

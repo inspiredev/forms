@@ -3,6 +3,7 @@
 const omit = require('lodash.omit');
 const firestore = require('@tridnguyen/firestore');
 const mailer = require('../utils/mailer');
+const logger = require('../utils/logger');
 
 exports.showAll = function (req, res) {
 	firestore.collection('forms')
@@ -154,6 +155,7 @@ exports.newEntry = function (req, res) {
 		});
 	}).then(null, err => {
 		console.error(err);
+		logger.error('Error creating new form entry', err, req);
 		res.status(400).send(err.message);
 	});
 };
