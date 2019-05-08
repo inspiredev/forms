@@ -4,9 +4,10 @@ const omit = require('lodash.omit');
 const firestore = require('@tridnguyen/firestore');
 const mailer = require('../utils/mailer');
 const logger = require('../utils/logger');
+const router = require('../utils/router');
 
-exports.showAll = function (req, res) {
-	firestore.collection('forms')
+function showAll (req, res) {
+	return firestore.collection('forms')
 		.get()
 		.then(formsSnapshot => {
 			return formsSnapshot.docs.map(formDoc => formDoc.data());
@@ -17,16 +18,13 @@ exports.showAll = function (req, res) {
 			}
 			res.render('forms', {forms});
 		})
-		.then(null, err => {
-			console.error(err);
-			res.sendStatus(400);
-		});
 };
+exports.showAll = router(showAll);
 
-exports.show = function (req, res) {
+function show (req, res) {
 	const formId = req.params.form_id;
 	const formRef = firestore.doc(`forms/${formId}`);
-	formRef.get().then(formSnapshot => {
+	return formRef.get().then(formSnapshot => {
 		if (!formSnapshot.exists) {
 			return res.sendStatus(404);
 		}
@@ -44,18 +42,16 @@ exports.show = function (req, res) {
 				}
 				res.render('form_single', form);
 			});
-	}).then(null, err => {
-		console.error(err);
-		res.sendStatus(400);
 	});
 };
+exports.show = router(show);
 
-exports.create = function (req, res) {
+function create (req, res) {
 	const id = Date.now();
 	const requiredFields = req.body['validation-requireds'].split(',')
 		.map(field => field.trim());
 	const formDoc = firestore.doc(`forms/${id}`);
-	formDoc.set({
+	return formDoc.set({
 		name: req.body.name,
 		notifyEmail: req.body['notify-email'],
 		notifyEmailType: req.body['notify-email-type'],
@@ -69,13 +65,11 @@ exports.create = function (req, res) {
 			created: true,
 			id: id
 		});
-	}).then(null, err => {
-		console.error(err);
-		res.sendStatus(400);
 	});
 };
+exports.create = router(create);
 
-exports.update = function (req, res) {
+function update (req, res) {
 	const id = req.params.form_id;
 	if (!id) {
 		return res.status(400).send('Missing form ID.');
@@ -96,23 +90,21 @@ exports.update = function (req, res) {
 		updatedForm.notifyEmailCc = req.body['notify-email-cc'];
 	}
 	const formRef = firestore.doc(`forms/${id}`);
-	formRef.set(updatedForm, { merge: true }).then(() => {
+	return formRef.set(updatedForm, { merge: true }).then(() => {
 		res.json({
 			updated: true
 		});
-	}).then(null, err => {
-		console.error(err);
-		res.sendStatus(400);
-	})
+	});
 };
+exports.update = router(update);
 
-exports.newEntry = function (req, res) {
+function newEntry (req, res) {
 	const formId = req.body.form_id;
 	const content = omit(req.body, 'form_id');
 	const entryId = Date.now();
 
 	const formRef = firestore.doc(`forms/${formId}`);
-	formRef.get().then(formSnapshot => {
+	return formRef.get().then(formSnapshot => {
 		if (!formSnapshot.exists) {
 			throw new Error(`Unable to find form ${formId}`);
 		}
@@ -153,9 +145,6 @@ exports.newEntry = function (req, res) {
 				});
 			});
 		});
-	}).then(null, err => {
-		console.error(err);
-		logger.error('Error creating new form entry', err, req);
-		res.status(400).send(err.message);
 	});
 };
+exports.newEntry = router(newEntry);
