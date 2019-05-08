@@ -138,7 +138,7 @@ exports.newEntry = function (req, res) {
 			// send email notification
 			const entriesCollectionRef = firestore.collection(`forms/${formId}/entries`);
 			return entriesCollectionRef.get().then(entriesCollectionSnapshot => {
-				const toAddress = form.notifyEmail;
+				let toAddress = form.notifyEmail;
 				// if notify email address is to be mapped to a field
 				if (form.notifyEmailType && form.notifyEmailType === 'field') {
 					toAddress = content[form.notifyEmail];
