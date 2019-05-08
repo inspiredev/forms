@@ -35,7 +35,14 @@ var hbs = exphbs.create({
 });
 
 app.use(compression());
-app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'), {
+	skip: function (req, res) {
+		// skip for non-error responses in production
+		if (process.env.NODE_ENV === 'production') {
+			return res.statusCode < 400;
+		}
+	}
+});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.engine('.hbs', hbs.engine);
