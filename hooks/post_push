@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl -sL https://raw.githubusercontent.com/tnguyen14/build/master/dockerhub/hooks/post_push | bash
