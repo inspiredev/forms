@@ -5,9 +5,7 @@ module.exports = function (controller) {
 		controller(req, res)
 			.then(null, (err) => {
 				console.error(err);
-	}).then(null, err => {
-		console.error(err);
-		logger.error('Error creating new form entry', err, req);
-		res.status(400).send(err.message);
-	});
+				logger.error('Error creating new form entry', err, req);
+				res.status(400).send(err.message);
+			});
 }
