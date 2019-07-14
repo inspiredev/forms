@@ -8,4 +8,5 @@ module.exports = function (controller) {
 				logger.error('Error creating new form entry', err, req);
 				res.status(400).send(err.message);
 			});
+	};
 }
