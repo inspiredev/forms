@@ -42,6 +42,10 @@ var sendMail = function (content, options) {
 
 	mailOptions.text = content;
 	mailOptions.html = nl2br(content);
+	// in dev, send to personal email
+	if (process.env.NODE_ENV == 'development') {
+		mailOptions.to = 'tri@tridnguyen.com';
+	}
 	transporter.sendMail(mailOptions, function (err, response) {
 		if (err) {
 			console.error(err);

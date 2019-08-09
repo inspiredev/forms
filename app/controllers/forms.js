@@ -128,6 +128,7 @@ function newEntry (req, res) {
 				submitted: true
 			});
 		}).then(() => {
+			logger.log(content);
 			// send email notification
 			const entriesCollectionRef = firestore.collection(`forms/${formId}/entries`);
 			return entriesCollectionRef.get().then(entriesCollectionSnapshot => {
