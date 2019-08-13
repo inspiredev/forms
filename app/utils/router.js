@@ -6,7 +6,10 @@ module.exports = function (controller) {
 			.then(null, (err) => {
 				console.error(err);
 				logger.error(err, req);
-				res.status(400).send(err.message);
+				// only send error message if res hasn't been sent
+				if (!res.headersSent) {
+					res.status(400).send(err.message);
+				}
 			});
 	};
 }

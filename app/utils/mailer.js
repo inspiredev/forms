@@ -2,6 +2,7 @@
 
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
+const logger = require('./logger');
 
 var transporter = nodemailer.createTransport(smtpTransport({
 	service: 'Mailgun',
@@ -42,15 +43,20 @@ var sendMail = function (content, options) {
 
 	mailOptions.text = content;
 	mailOptions.html = nl2br(content);
-	transporter.sendMail(mailOptions, function (err, response) {
-		if (err) {
-			console.error(err);
-		} else {
-			console.log(response);
-		}
-
-		// if you don't want to use this transport object anymore, uncomment following line
-		// transporter.close(); // shut down the connection pool, no more messages
+	// in dev, send to personal email
+	if (process.env.NODE_ENV == 'development') {
+		mailOptions.to = 'tri@tridnguyen.com';
+	}
+	return new Promise((resolve, reject) => {
+		transporter.sendMail(mailOptions, function (err, response) {
+			if (err) {
+				return reject(err);
+			}
+			logger.debug('sendmail response', response);
+			// if you don't want to use this transport object anymore, uncomment following line
+			// transporter.close(); // shut down the connection pool, no more messages
+			resolve();
+		});
 	});
 };
 

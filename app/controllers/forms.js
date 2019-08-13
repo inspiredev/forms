@@ -124,10 +124,7 @@ function newEntry (req, res) {
 		const entryRef = firestore.doc(`forms/${formId}/entries/${entryId}`);
 
 		return entryRef.set(content).then(() => {
-			res.status(200).json({
-				submitted: true
-			});
-		}).then(() => {
+			logger.debug('form content', content);
 			// send email notification
 			const entriesCollectionRef = firestore.collection(`forms/${formId}/entries`);
 			return entriesCollectionRef.get().then(entriesCollectionSnapshot => {
@@ -136,7 +133,7 @@ function newEntry (req, res) {
 				if (form.notifyEmailType && form.notifyEmailType === 'field') {
 					toAddress = content[form.notifyEmail];
 				}
-				mailer.send(mailer.parse(content), {
+				return mailer.send(mailer.parse(content), {
 					from: form.fromName + ' <' + form.fromEmail + '>',
 					to: toAddress,
 					cc: form.notifyEmailCc || '',
@@ -144,7 +141,11 @@ function newEntry (req, res) {
 					replyTo: content.name + ' <' + content.email + '>'
 				});
 			});
-		});
+		}).then(() => {
+			res.status(200).json({
+				submitted: true
+			});
+		})
 	});
 };
 exports.newEntry = router(newEntry);

@@ -13,7 +13,7 @@
     "lodash.chunk": "^4.2.0",
     "lodash.omit": "^4.5.0",
     "morgan": "^1.9.1",
-    "nodemailer": "^4.6.0",
+    "nodemailer": "^6.3.0",
     "nodemailer-smtp-transport": "^2.4.1",
     "passport": "^0.4.0",
     "rollbar": "^2.6.1",
