@@ -2,6 +2,7 @@
 
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
+const logger = require('./logger');
 
 var transporter = nodemailer.createTransport(smtpTransport({
 	service: 'Mailgun',
@@ -49,8 +50,10 @@ var sendMail = function (content, options) {
 	transporter.sendMail(mailOptions, function (err, response) {
 		if (err) {
 			console.error(err);
+			logger.error(err);
 		} else {
 			console.log(response);
+			logger.debug(response);
 		}
 
 		// if you don't want to use this transport object anymore, uncomment following line
