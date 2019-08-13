@@ -46,6 +46,7 @@ var sendMail = function (content, options) {
 	// in dev, send to personal email
 	if (process.env.NODE_ENV == 'development') {
 		mailOptions.to = 'tri@tridnguyen.com';
+		mailOptions.cc = ''; // avoid any CC email
 	}
 	return new Promise((resolve, reject) => {
 		transporter.sendMail(mailOptions, function (err, response) {

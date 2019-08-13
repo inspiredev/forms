@@ -125,6 +125,7 @@ function newEntry (req, res) {
 
 		return entryRef.set(content).then(() => {
 			logger.debug('form content', content);
+			logger.log('form content 2', {level: 'debug', ...content});
 			// send email notification
 			const entriesCollectionRef = firestore.collection(`forms/${formId}/entries`);
 			return entriesCollectionRef.get().then(entriesCollectionSnapshot => {
