@@ -52,7 +52,7 @@ var sendMail = function (content, options) {
 			if (err) {
 				return reject(err);
 			}
-			logger.debug(response);
+			logger.debug(`sendmail response ${response}`);
 			// if you don't want to use this transport object anymore, uncomment following line
 			// transporter.close(); // shut down the connection pool, no more messages
 			resolve();

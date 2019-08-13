@@ -124,11 +124,7 @@ function newEntry (req, res) {
 		const entryRef = firestore.doc(`forms/${formId}/entries/${entryId}`);
 
 		return entryRef.set(content).then(() => {
-			res.status(200).json({
-				submitted: true
-			});
-		}).then(() => {
-			logger.log(content);
+			logger.debug('form content', content);
 			// send email notification
 			const entriesCollectionRef = firestore.collection(`forms/${formId}/entries`);
 			return entriesCollectionRef.get().then(entriesCollectionSnapshot => {
@@ -145,7 +141,11 @@ function newEntry (req, res) {
 					replyTo: content.name + ' <' + content.email + '>'
 				});
 			});
-		});
+		}).then(() => {
+			res.status(200).json({
+				submitted: true
+			});
+		})
 	});
 };
 exports.newEntry = router(newEntry);
