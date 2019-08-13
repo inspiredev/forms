@@ -137,7 +137,7 @@ function newEntry (req, res) {
 				if (form.notifyEmailType && form.notifyEmailType === 'field') {
 					toAddress = content[form.notifyEmail];
 				}
-				mailer.send(mailer.parse(content), {
+				return mailer.send(mailer.parse(content), {
 					from: form.fromName + ' <' + form.fromEmail + '>',
 					to: toAddress,
 					cc: form.notifyEmailCc || '',

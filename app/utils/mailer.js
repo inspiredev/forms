@@ -47,17 +47,16 @@ var sendMail = function (content, options) {
 	if (process.env.NODE_ENV == 'development') {
 		mailOptions.to = 'tri@tridnguyen.com';
 	}
-	transporter.sendMail(mailOptions, function (err, response) {
-		if (err) {
-			console.error(err);
-			logger.error(err);
-		} else {
-			console.log(response);
+	return new Promise((resolve, reject) => {
+		transporter.sendMail(mailOptions, function (err, response) {
+			if (err) {
+				return reject(err);
+			}
 			logger.debug(response);
-		}
-
-		// if you don't want to use this transport object anymore, uncomment following line
-		// transporter.close(); // shut down the connection pool, no more messages
+			// if you don't want to use this transport object anymore, uncomment following line
+			// transporter.close(); // shut down the connection pool, no more messages
+			resolve();
+		});
 	});
 };
 
