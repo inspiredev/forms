@@ -46,13 +46,14 @@ var sendMail = function (content, options) {
 	// in dev, send to personal email
 	if (process.env.NODE_ENV == 'development') {
 		mailOptions.to = 'tri@tridnguyen.com';
+		mailOptions.cc = ''; // avoid any CC email
 	}
 	return new Promise((resolve, reject) => {
 		transporter.sendMail(mailOptions, function (err, response) {
 			if (err) {
 				return reject(err);
 			}
-			logger.debug('sendmail response', response);
+			logger.debug('sendmail response', {response});
 			// if you don't want to use this transport object anymore, uncomment following line
 			// transporter.close(); // shut down the connection pool, no more messages
 			resolve();
